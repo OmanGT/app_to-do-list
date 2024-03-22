@@ -197,7 +197,6 @@ if (isset($_GET['done'])) {
                             <span><?= $q['label'] ?></span>
                         </div>
                         <div class="action">
-                            <a href="#"><i class='bx bx-edit' title="Edit"></i></a>
                             <a href="?delete=<?= $q['id'] ?>"><i class='bx bx-trash' title="Hapus" onclick="return confirm('Apakah anda Yakin ingin menghapus ini?')"></i></a>
                         </div>
                     </div>
