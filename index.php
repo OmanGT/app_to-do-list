@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+require 'conn.php';
 
 //insert data
 if (isset($_POST['add'])) {
