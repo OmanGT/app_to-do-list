@@ -17,6 +17,27 @@ if (isset($_POST['add'])) {
 $q_show = "select * from task order by id desc";
 $run_q_show = mysqli_query($connect, $q_show);
 
+//delete
+if (isset($_GET['delete'])) {
+    $q_delete = "delete from task where id= '" . $_GET['delete'] . "'";
+    $run_q_delete = mysqli_query($connect, $q_delete);
+
+    header('Refresh:0, url=index.php');
+}
+
+//update
+if (isset($_GET['done'])) {
+    $status = 'close';
+    if ($_GET['status'] == 'open') {
+        $status = 'close';
+    } else {
+        $status = 'open';
+    }
+    $q_update = "update task set status ='" . $status . "' where id = '" . $_GET['done'] . "'";
+    $run_q_update = mysqli_query($connect, $q_update);
+    header('Refresh:0, url=index.php');
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -129,7 +150,7 @@ $run_q_show = mysqli_query($connect, $q_show);
             font-size: 16px;
         }
 
-        .card .task-items .done {
+        .card .task-items.done {
             color: #ccc;
             text-decoration: line-through;
         }
@@ -171,13 +192,13 @@ $run_q_show = mysqli_query($connect, $q_show);
                 while ($q = mysqli_fetch_array($run_q_show)) {
             ?>
                     <div class="card">
-                        <div class="task-items">
-                            <input type="checkbox">
+                        <div class="task-items <?= $q['status'] == 'close' ? 'done' : '' ?>">
+                            <input type="checkbox" onclick="window.location.href = '?done=<?= $q['id'] ?>&status=<?= $q['status'] ?>'" <?= $q['status'] == 'close' ? 'checked' : '' ?>>
                             <span><?= $q['label'] ?></span>
                         </div>
                         <div class="action">
                             <a href="#"><i class='bx bx-edit' title="Edit"></i></a>
-                            <a href="#"><i class='bx bx-trash' title="Hapus"></i></a>
+                            <a href="?delete=<?= $q['id'] ?>"><i class='bx bx-trash' title="Hapus" onclick="return confirm('Apakah anda Yakin ingin menghapus ini?')"></i></a>
                         </div>
                     </div>
                 <?php }
